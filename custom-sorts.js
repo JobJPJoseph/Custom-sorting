@@ -1,23 +1,31 @@
 function ageSort(users) {
   // Your code here
-  // We are going to use insertion sort
-  // Node: each element is an object that is nested in an array
-  let i = 0;
+  if (users.length <= 1) return users;
 
-  while (i < users.length) {
-    let engineer = users[i];
-    let idx = i;
+  let findMax = function (arr) {
+    let idx = 0;
+    let max = arr[0].age;
 
-    while (idx > 0 && users[idx - 1].age > engineer.age) {
-      users[idx] = users[idx - 1];
-      idx--;
+    for (let i = 1; i < arr.length; i++) {
+      let num = arr[i].age;
+
+      if (num > max) {
+        idx = i;
+        max = num;
+      }
+
     }
 
-    users[idx] = engineer;
-    i++;
+    return idx;
   }
 
-  return users;
+  let engineer = users.splice(findMax(users), 1);
+
+  let result = ageSort(users);
+
+  result.push(...engineer);
+
+  return result;
 }
 
 function oddEvenSort(arr) {
