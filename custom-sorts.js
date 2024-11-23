@@ -44,35 +44,84 @@ function validAnagrams(s, t) {
   // Your code here
   // This is not a sort!!!
   // We will use a Object
-  let sObj = {};
-  let tObj = {};
+  // let sObj = {};
+  // let tObj = {};
   if (s.length !== t.length) return false;
 
-  for (let i = 0; i < s.length; i++) {
-    let charS = s[i];
-    let charT = t[i];
+  // for (let i = 0; i < s.length; i++) {
+  //   let charS = s[i];
+  //   let charT = t[i];
 
-    if (sObj[charS] === undefined) {
-      sObj[charS] = 1;
-    } else {
-      sObj[charS]++;
-    }
+  //   if (sObj[charS] === undefined) {
+  //     sObj[charS] = 1;
+  //   } else {
+  //     sObj[charS]++;
+  //   }
 
-    if (tObj[charT] === undefined) {
-      tObj[charT] = 1;
-    } else {
-      tObj[charT]++;
-    }
+  //   if (tObj[charT] === undefined) {
+  //     tObj[charT] = 1;
+  //   } else {
+  //     tObj[charT]++;
+  //   }
 
+  // }
+
+  // for (let i = 0; i < t.length; i++) {
+  //   let tChar = t[i];
+
+  //   if (sObj[tChar] !== tObj[tChar]) return false;
+  // }
+
+  // return true; // => O(2n)
+
+  /*
+  We are going to use quicksort for this problem because strings are immutable
+  // We could have just sorted them in alphabetical order
+  */
+
+  let quicksort = (unsorted) => {
+    // Does not matter if its a string or array
+    if (unsorted.length <= 1) return unsorted;
+
+    let pivot = unsorted[0];
+
+    let left = quicksort(function () {
+      let arr = [];
+
+      for (let i = 1; i < unsorted.length; i++) {
+        let char = unsorted[i];
+
+        if (char < pivot) {
+          arr.push(char);
+        }
+
+      }
+
+      return arr;
+    }());
+
+    let right = quicksort(function () {
+      let arr = [];
+
+      for (let i = 1; i < unsorted.length; i++) {
+        let char = unsorted[i];
+
+        if (char >= pivot) {
+          arr.push(char);
+        }
+
+      }
+
+      return arr;
+    }());
+
+    return [...left, pivot, ...right];
   }
 
-  for (let i = 0; i < t.length; i++) {
-    let tChar = t[i];
+  let result1 = quicksort(t).join();
+  let result2 = quicksort(s).join();
 
-    if (sObj[tChar] !== tObj[tChar]) return false;
-  }
-
-  return true;
+  return (result1 === result2); // => O(2n log n)
 }
 
 function reverseBaseSort(arr) {
