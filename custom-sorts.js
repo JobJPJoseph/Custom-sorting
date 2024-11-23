@@ -132,49 +132,107 @@ function reverseBaseSort(arr) {
 
   // Sort by their string.length
   // Using selection sort
-  let findMax = function (arr) {
-    let min = 0;
-    let max = arr[0];
+  // let findMax = function (arr) {
+  //   let min = 0;
+  //   let max = arr[0];
 
-    for (let i = 1; i < arr.length; i++) {
-      let num = arr[i];
+  //   for (let i = 1; i < arr.length; i++) {
+  //     let num = arr[i];
 
-      if (num > max) {
-        max = num;
-        min = i;
-      }
-    }
+  //     if (num > max) {
+  //       max = num;
+  //       min = i;
+  //     }
+  //   }
 
-    return min;
+  //   return min;
+  // }
+
+  // let result = [];
+
+  // while(arr.length) {
+  //   let idx = findMax(arr);
+  //   let num = arr.splice(idx, 1);
+  //   result.push(...num);
+  // }
+
+  // // sort by value now in decsending
+  // // use insertion sort
+
+  // let i = 0;
+  // while (i < result.length) {
+  //   let idx = i;
+  //   let num = result[i];
+
+  //   while (idx > 0 && String(result[idx - 1]).length === String(num).length && result[idx - 1] > num) {
+  //     result[idx] = result[idx - 1];
+  //     idx--;
+  //   }
+
+  //   result[idx] = num;
+
+  //   i++;
+  // }
+
+  // return result;
+
+  /*
+  We need to nest an algorithm within another
+  We defualt goal is to sort it in decsending order
+  The base is refering to the number of digits
+  During our sorting process if the bases are the same, sorted them in decsending.
+    Make sure to keep another pointer that stops when it detects a difference in base
+  */
+
+  let equalBase = function (arg1, arg2) {
+    return (String(arg1).length === String(arg2).length);
   }
-
-  let result = [];
-
-  while(arr.length) {
-    let idx = findMax(arr);
-    let num = arr.splice(idx, 1);
-    result.push(...num);
-  }
-
-  // sort by value now in decsending
-  // use insertion sort
 
   let i = 0;
-  while (i < result.length) {
-    let idx = i;
-    let num = result[i];
 
-    while (idx > 0 && String(result[idx - 1]).length === String(num).length && result[idx - 1] > num) {
-      result[idx] = result[idx - 1];
-      idx--;
+  while (i < arr.length) {
+    let idx = i;
+    let num = arr[i];
+    let exit = false;
+
+    // sort in decsending
+    while (!exit) {
+
+      if (idx === 0) {
+        exit = true;
+        continue;
+      }
+
+      if (equalBase(arr[idx - 1], num)) {
+
+        if (arr[idx - 1] > num) { // => [101, 11, 1, 1, 100] => 11 > 10
+          arr[idx] = arr[idx - 1];
+          idx--;
+        } else {
+          exit = true;
+          continue;
+        }
+
+      } else {
+
+        if (arr[idx - 1] < num) {
+          arr[idx] = arr[idx - 1];
+          idx--;
+        } else {
+          exit = true;
+          continue;
+        }
+
+      }
+
+
     }
 
-    result[idx] = num;
-
+    arr[idx] = num;
     i++;
   }
 
-  return result;
+  return arr;
 }
 function frequencySort(arr) {
   // Your code here
